@@ -5,7 +5,9 @@ using namespace std;
 
 int main()
 {
+
     while (true) {
+
   cout<<"-----------------------------------------\n";
     int sele1=-1;
     string sudo=lectura("sudo.txt");  //cargamos archivos de inicios de sesion
@@ -28,6 +30,7 @@ int main()
           case 1:
 
             newmovie();
+
 
           break;
 
@@ -64,6 +67,7 @@ int main()
         if(valusu(sudo)){
             cout<<"ID|  nombre | genero  | duraccion | sala/hora | asientos disp | class  |"<<endl<<endl;
             string peliculas=lectura("peliculas.txt");
+            madepel(peliculas);
             cout<<peliculas<<endl;
 
             break;

@@ -1,6 +1,6 @@
 #include "funciones.h"
 
-
+cine b;
 string lectura(string ar){
     string palabra;
     ifstream archivo(ar);
@@ -105,7 +105,8 @@ void escribir(string info, string ar){
 void newmovie()                     //agregar nueva pelicula
 {
     string peliculas=lectura("peliculas.txt");
-    int I=5;
+    madepel(peliculas);
+    int I=knowid(peliculas);
     int flag=1;
     int duracion;
     char ID[1];
@@ -132,7 +133,7 @@ void newmovie()                     //agregar nueva pelicula
     cin>>sala;
     cout<<"ingrese la hora de la pelicula(sistema 24hrs):"<<endl;
     cin>>hora;
-     if(false)flag=1;                                         //validar si la sala esta ocupada a esa hora
+     if(validh(duracions,sala,hora))flag=1;                                         //validar si la sala esta ocupada a esa hora
     else{
         flag=0;
     }
@@ -140,12 +141,66 @@ void newmovie()                     //agregar nueva pelicula
     }
     parte=parte+sala+'/'+hora+" | ";
     cout<<"ingrese tipo de sala:"<<endl;
+    cout<<"tipo 1= 50 sillas  \ntipo 2 = 140 sillas \n tipo 3= 100 sillas"<<endl;
     cin>>tipsalas;
-    sillas="140";
+    switch (tipsalas) {
+     case 1:
+        sillas="50";
+        break;
+    default:
+        sillas="140";
+        break;
+     case 3:
+        sillas="100";
+        break;
+    }
+
     parte=parte + '0'+'/'+sillas+" | ";
     cout<<"ingrese clasificacion: "<<endl;
     cin>>clasif;
     parte=parte + clasif;
     peliculas += parte;
+    madepel(peliculas);
     escribir(peliculas,"peliculas.txt");
+
 }
+
+int knowid(string info){
+    int tam = info.length();
+    for(int i=(tam-2);i>0;i--){
+        if(info[i]=='\n'){
+            char *a= &info[i+1];
+            int b=atoi(a);
+            return  b;
+        }
+    }
+    return 0;
+}
+
+bool validh(string dur,string sal,string hour){
+     int d= std::atoi(dur.c_str());
+     int s= std::atoi(sal.c_str());
+     int h= std::atoi(hour.c_str());
+     d=(d/60)+1;
+     return b.validh(d,s,h);
+
+
+}
+
+void madepel(string info){
+
+    int tam=info.length();
+    string pelicula;
+    for(int i=0;i<tam;i++){
+        if(info[i]!='\n'){
+        pelicula+=info[i];
+        }
+        if(info[i]=='\n'){
+         b.agregar(pelicula);
+         pelicula="";
+       }
+
+    }
+}
+
+
