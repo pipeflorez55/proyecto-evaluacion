@@ -15,6 +15,8 @@ using namespace std;
 
 void madepel(string info);
 string lectura(string ar);
+void makesill(int i,int sillas);
+void  seleasiento(int sele3);
 bool valadmin(string info);
 bool valusu(string info);
 void escribir(string info, string ar);

@@ -6,6 +6,8 @@ using namespace std;
 int main()
 {
 
+    int venta;
+
     while (true) {
 
   cout<<"-----------------------------------------\n";
@@ -66,11 +68,19 @@ int main()
           char sele2='e';
         if(valusu(sudo)){
             cout<<"ID|  nombre | genero  | duraccion | sala/hora | asientos disp | class  |"<<endl<<endl;
-            string peliculas=lectura("peliculas.txt");
-            madepel(peliculas);
+            string peliculas=lectura("peliculas.txt");       // leo peliculas actuales en la base de datos
+            madepel(peliculas);                                // creo esas peliculas en sus respectivos mapas y objetos
             cout<<peliculas<<endl;
+            int sele3=-1;
+            cout<<"seleccione el ID de la pelicula que desea ver:" ;
+            cin>>sele3;
+            while(sele3<1 || sele3>10) {
+                cout<<"selecione una de las ID existentes: "<<endl;
+                cin>>sele3;
+            }
+            seleasiento(sele3);
+           break;
 
-            break;
         }
         else{
           cout<<"desea inter otra vez s/n"<<endl;

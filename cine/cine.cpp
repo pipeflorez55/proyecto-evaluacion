@@ -2,11 +2,17 @@
 void cine::agregar(string pelicul){
     char *num=&pelicul[0];
     int b=atoi(num);
-    ff.insert(pair<int, pelicula>(b,a));
+    ff.insert(pair<int, pelicula>(b,a)); // creo la clave del ID de la pelicual y creo su objeto dentro del map
     r=ff.find(b);
 
     r->second.agregarp( pelicul);
 
+}
+
+void cine::seleasiento(int sele3)
+{
+    r=ff.find(sele3);       //llevar al iterador el iD de la pelicula
+    r->second.seleasiento(); //entro en la pelicula para  bscar el asiento
 }
 
 void cine::visualizar()
@@ -18,7 +24,7 @@ void cine::visualizar()
 bool cine::validh(int d, int s, int h)
 {
 
-  for(r=ff.begin();r!=ff.end();r++){
+  for(r=ff.begin();r!=ff.end();r++){        // itero entre todas las peliculas en el map
        if(r->second.validh(d,s,h)){
            return true;
 
