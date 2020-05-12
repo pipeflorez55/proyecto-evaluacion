@@ -36,6 +36,12 @@ bool valadmin(string info){
 
 }
 bool valusu(string info){
+    int pol=-1;
+    while (pol!=1 &&pol!=0) {     // sistema de mebresia para una funcionalidad de puntos no implementada
+   cout<<"Si tiene usuario marque 1, si no marque 0 para entrar como invitado"<<endl;
+   cin>>pol;
+    }
+    if(pol==1){
     cout<<"ingrese su cedula:  "<<endl;
      while (true) {
     long tam=info.length();
@@ -94,6 +100,11 @@ bool valusu(string info){
         return false;
     }
     cout<<"Vuelva a ingresar cedula:  "<<endl;
+    }
+    }
+    else{
+        cout<<"ingreso como invitado"<<endl;
+        return true;
     }
 }
 void escribir(string info, string ar){    //escribir una iformacion en un archivo deseado
@@ -212,7 +223,7 @@ void makesill(int i,int sillas){      // crear archivo de sillas  reservadas en 
     string info;
     int filas=sillas/10;
     for(int k=0;k<filas;k++){           //creo las filas necesarias para el total de asientos
-        for(int j=1;j<=10;j++){         // reparto 10 sillas en cada fila
+        for(int j=0;j<=9;j++){         // reparto 10 sillas en cada fila
             std::string u = std::to_string(j);
             info += u;
             info += " ";
@@ -231,4 +242,99 @@ void makesill(int i,int sillas){      // crear archivo de sillas  reservadas en 
 void seleasiento(int sele3)
 {
     b.seleasiento( sele3);
+    renewcartelera(sele3);
+
+}
+void tipoasiento(){
+    cout<<"que tipo de asiento desea comprar:"<<endl;
+    string asiento = lectura("asientos.txt");        // cargo los tipos de asientos
+    cout<< asiento<<endl;                            // los muestro en pantalla
+}
+void renewcartelera(int sele3){    // cambiar sillas disponibles en la cartelera
+    string info=lectura("peliculas.txt");
+    int tam=info.length();
+    int anc,disp;
+    string pelicula,num;
+    for(int i=0;i<tam;i++){
+        if(info[i]!='\n'){
+        pelicula+=info[i];
+        }
+        if(info[i]=='\n'){
+        int nume=IDre( pelicula);    //conseguir ID de la linea
+         if(sele3==nume){             // si coincide con la pelicula donde se comporhaga..
+          int pos=LocSIL(pelicula,&anc,&disp);
+          int anpeli=pelicula.length();
+
+          pos=i-(anpeli-pos);
+          disp --;
+          string dispo=to_string(disp);
+          info.replace(pos,anc,dispo);
+          ofstream archivo2("peliculas.txt");
+          archivo2<<info;
+          archivo2.close();
+
+             return ;
+         }
+         pelicula="";
+       }
+
+    }
+}
+
+int IDre(string pelicula){    // sacar el ID de una pelicula
+    string num;
+     int nume;
+    int tm=pelicula.length();
+    for(int j=0;j<tm;j++){
+        if(pelicula[j]!=' '){ // guarde hasta encontrar el primer espacio
+             num +=pelicula[j];
+        }
+        else{ // si se llega al espacio convertir entero y retornar
+             nume=  std::atoi(num.c_str());
+             return nume;
+        }
+    }
+
+}
+int LocSIL(string pelicul,int *r,int *disp){
+    int tam=pelicul.length();
+    int pos;
+     int cnt=0,anc=0;
+     string dis;
+    for(int i=0;i<tam-1;i++){      // itero en el tamaño del  string
+        if(pelicul[i]=='|'){   // aumento contador a cambiar de lugar despues de |
+            cnt+=1;
+            if(cnt==5){
+                pos=i+2;
+            }
+        }
+
+        if(cnt==5){
+
+            if(pelicul[i]!='|'){
+            dis+=pelicul[i];    // guardo asientos
+            }
+        }
+
+
+    }
+    int q=dis.length();
+    int star=0;
+
+    string sd;
+    for(int i =1;i<q;i++){
+
+        if(dis[i]=='/'){
+            star=1;
+            *r=anc;
+        }
+        if(star==0){
+            if(dis[i]!=' '){
+            sd+=dis[i];
+            anc++;
+            }
+        }
+    }
+    *disp=std::atoi(sd.c_str());
+    return pos;
 }

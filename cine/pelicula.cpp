@@ -2,7 +2,19 @@
 
 void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicula
 {
-    ID=atoi(&pelicul[0]);   //guardo el ID
+    string num;
+     int nume;
+    int tm=pelicul.length();
+    for(int j=0;j<tm;j++){
+        if(pelicul[j]!=' '){
+             num +=pelicul[j];
+        }
+        else{
+             nume=  std::atoi(num.c_str());
+
+        }
+    }
+    ID=nume;   //guardo el ID
     int cnt=0;               // lo uso par saber  en que parte del archivo esta por ejemplo sla , genero ,etc
     string name,gen,dur,salat,dis,cl;
     int tam=pelicul.length();
@@ -83,18 +95,18 @@ void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicul
         string sd,s;
         for(int i =1;i<q;i++){
 
-            if(salat[i]=='/'){
+            if(dis[i]=='/'){
                 star=1;
 
             }
             if(star==0){
-                if(salat[i]!=' '){
-                sd+=salat[i];
+                if(dis[i]!=' '){
+                sd+=dis[i];
                 }
             }
             if(star==1){
-                if(salat[i]!=' ' && salat[i]!='/'){
-                s+=salat[i];
+                if(dis[i]!=' ' && dis[i]!='/'){
+                s+=dis[i];
                 }
             }
          disponibles = std::atoi(sd.c_str());
@@ -190,6 +202,7 @@ void pelicula::visuasientos(){                 // muestro la sala
 }
 void pelicula::seleasiento()
 {
+
         visuasientos();         // muestro asientos
         int flg=0,num;
         char fila;
@@ -207,6 +220,8 @@ void pelicula::seleasiento()
             flg=1;
         }
        }
+
+
 
 }
 string pelicula::lectura(string ar){
@@ -234,6 +249,7 @@ bool pelicula::valas(char a,int num){     // validar y reserva asiento en una pe
                 string info=lectura(s);                         // leo el archivo de asientos de esa pelicula
                 int c=pos( a, num);                             // encuentro la posicion de ese asiento
                 info.replace(c,1,"/");                          // lo remplazo por  el simbolo de silla ocupada (/)
+                disponibles --;                                 // le resto uno a las sillas disponibles
                 escribirR(info,s);                              // y lo escribo en el archivo
 
                 return false;

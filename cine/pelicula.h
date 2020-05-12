@@ -8,6 +8,7 @@
 #include <fstream>
 
 
+
 using namespace std;
 
 class pelicula{ //Prototipo de la clase, es decir, la forma que tiene la clase

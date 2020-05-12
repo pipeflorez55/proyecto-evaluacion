@@ -78,6 +78,7 @@ int main()
                 cout<<"selecione una de las ID existentes: "<<endl;
                 cin>>sele3;
             }
+            tipoasiento();
             seleasiento(sele3);
            break;
 
