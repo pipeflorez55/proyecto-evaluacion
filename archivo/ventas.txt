@@ -1,0 +1,3 @@
+invitado | $9900 | 3 | A9
+invitado | $10800 | 2 | K1
+

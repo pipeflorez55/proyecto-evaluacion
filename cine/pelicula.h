@@ -17,11 +17,13 @@ class pelicula{ //Prototipo de la clase, es decir, la forma que tiene la clase
     int pos(char a,int num);
     void agregarp (string pelicul);
     bool validh(int d,int s,int h);
-    void seleasiento();
+    void seleasiento(string *vents);
     void makesill(int i);
     void escribirR(string info,string ar);
     void genvector(int Y);
     void visuasientos();
+    string codifica2(string palabra);
+    string decodifica2(string palabra);
     string lectura(string ar);
 
     private:

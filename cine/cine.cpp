@@ -1,4 +1,5 @@
 #include "cine.h"
+pelicula c;
 void cine::agregar(string pelicul){
     char *num=&pelicul[0];
     int b=atoi(num);
@@ -9,16 +10,17 @@ void cine::agregar(string pelicul){
 
 }
 
-void cine::seleasiento(int sele3)
+void cine::seleasiento(int sele3,string *vents)
 {
     r=ff.find(sele3);       //llevar al iterador el iD de la pelicula
-    r->second.seleasiento(); //entro en la pelicula para  bscar el asiento
+    r->second.seleasiento( vents); //entro en la pelicula para  bscar el asiento
 }
 
 void cine::visualizar()
 {
     r=ff.find(1);
     cout<<r->first<<endl;
+
 }
 
 bool cine::validh(int d, int s, int h)

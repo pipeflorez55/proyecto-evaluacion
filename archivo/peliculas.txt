@@ -1,0 +1,9 @@
+1 | Mision de rescate | Accion | 120 min | 4/19 | 57/140 | 16+
+2 | Triple Frontera | Accion | 125 min | 2/19 | 24/140 | 16+
+3 | Bird Box: Aciegas | Drama | 124 min | 3/22 | 74/140 | 16+
+4 | A mi altura | Infantil | 102 min | 1/10 | 14/50 | 7+
+5 | RicardoQuevedo: Hay gente asi | Comedia | 58 min | 7/19 | 50/140 | 16+
+6 | r | t | 70 min | 2/10 | 48/50 | 4+
+7 | TU | ROMANCE | 60 min | 7/6 | 100/100 | 5+
+8 | el | comedia | 150 min | 9/1 | 140/140 | 5+
+9 | el exterminio | drama | 130 min | 0/12 | 50/50 | 13+

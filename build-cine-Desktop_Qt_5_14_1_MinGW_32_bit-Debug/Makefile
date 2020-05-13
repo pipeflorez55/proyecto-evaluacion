@@ -507,11 +507,13 @@ cine.o: ../cine/cine.cpp ../cine/cine.h \
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o cine.o ..\cine\cine.cpp
 
 funciones.o: ../cine/funciones.cpp ../cine/funciones.h \
-		../cine/pelicula.h \
-		../cine/cine.h
+		../cine/cine.h \
+		../cine/pelicula.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o funciones.o ..\cine\funciones.cpp
 
-main.o: ../cine/main.cpp ../cine/funciones.h
+main.o: ../cine/main.cpp ../cine/funciones.h \
+		../cine/cine.h \
+		../cine/pelicula.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ..\cine\main.cpp
 
 pelicula.o: ../cine/pelicula.cpp ../cine/pelicula.h

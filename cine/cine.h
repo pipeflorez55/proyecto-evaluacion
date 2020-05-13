@@ -11,7 +11,7 @@ class cine{ //Prototipo de la clase, es decir, la forma que tiene la clase
     public:
 
     void agregar(string pelicul);
-    void seleasiento(int sele3);
+    void seleasiento(int sele3,string *vents);
     void visualizar();
     bool validh(int d,int s,int h);
 

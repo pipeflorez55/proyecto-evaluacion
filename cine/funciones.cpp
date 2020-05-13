@@ -3,6 +3,8 @@
 cine b;
 string lectura(string ar){
     string palabra;
+    string t="../archivo/";
+    ar=t+ar;
     ifstream archivo(ar);
     while(!archivo.eof()){              //leer y guardarhasta encontrar caracter fin de texto
     char a=archivo.get();
@@ -35,7 +37,8 @@ bool valadmin(string info){
     }
 
 }
-bool valusu(string info){
+bool valusu(string info,string *vent){
+    string parte,cedula,claveG,clave="";
     int pol=-1;
     while (pol!=1 &&pol!=0) {     // sistema de mebresia para una funcionalidad de puntos no implementada
    cout<<"Si tiene usuario marque 1, si no marque 0 para entrar como invitado"<<endl;
@@ -47,7 +50,6 @@ bool valusu(string info){
     long tam=info.length();
     char a;
     int s=-1;
-    string parte,cedula,claveG,clave="";
     cin>>cedula;
     for(int i=0;i<tam;i++){                                           //iterar sobre el archivo de login
         a=info[i];
@@ -58,13 +60,15 @@ bool valusu(string info){
                 for(int j=(i+1);j<(i+5);j++){
                     char b=info[j];
                     claveG +=b;
-                    int p=j;
+
                 }
                 while (claveG!=clave) {             //comparar si es la correcta
                     cout<<"ingrese su clave 4 digitos: "<<endl;
                     cin>>clave;
                     if(clave==claveG){
                         cout<<"acesso concedido"<<endl;
+                        *vent=*vent+cedula+" | ";
+
                         return true;
 
                     }
@@ -104,10 +108,17 @@ bool valusu(string info){
     }
     else{
         cout<<"ingreso como invitado"<<endl;
+        cedula="invitado";
+        cedula=cedula+" | ";
+        *vent=*vent+cedula;
         return true;
+
+
     }
 }
 void escribir(string info, string ar){    //escribir una iformacion en un archivo deseado
+    string t="../archivo/";
+    ar=t+ar;
     ofstream archivo2(ar);
     archivo2<<info<<endl;
     archivo2.close();
@@ -116,8 +127,8 @@ void escribir(string info, string ar){    //escribir una iformacion en un archiv
 void newmovie()                     //agregar nueva pelicula
 {
     string peliculas=lectura("peliculas.txt");
-    madepel(peliculas);
-    int I=knowid(peliculas);
+    madepel(peliculas);                // uso la funcion para crear los contenedores de las peliculas
+    int I=knowid(peliculas);          // uso la funcion creada para saber mi ultimo ID
     int flag=1;
     int duracion;
     char ID[1];
@@ -171,15 +182,15 @@ void newmovie()                     //agregar nueva pelicula
     cin>>clasif;
     parte=parte + clasif;
     peliculas += parte;
-    madepel(peliculas);
     int z;
      z = std::atoi(sillas.c_str());
     makesill(I,z);
+    madepel(peliculas);
     escribir(peliculas,"peliculas.txt");
 
 }
 
-int knowid(string info){                    // saber el ultimo ID creado en la cartelera para no repetirlo
+int knowid(string info){                   // saber el ultimo ID creado en la cartelera para no repetirlo
     int tam = info.length();
     for(int i=(tam-2);i>0;i--){             // comienzo a iterar desde el ultimo enter  hasta el siguiente
         if(info[i]=='\n'){                  // le sumo uno asi consigo el ultimo ID y lo guardo para retornar
@@ -191,7 +202,7 @@ int knowid(string info){                    // saber el ultimo ID creado en la c
     return 0;
 }
 
-bool validh(string dur,string sal,string hour){
+bool validh(string dur,string sal,string hour){   // validar hora disponible
      int d= std::atoi(dur.c_str());
      int s= std::atoi(sal.c_str());
      int h= std::atoi(hour.c_str());
@@ -200,23 +211,56 @@ bool validh(string dur,string sal,string hour){
 
 
 }
+void agregarasiento(){  // agregar un nuevo tipo de asiento
+    string asientos=lectura("asientos.txt");   // cargo el string
+    string nombre;
+    string costo;
+    int id=knowid(asientos);       // utilizo mi funcion para saber cual es el ultimo id usado
+     id ++;
+     string ids=to_string(id);
+     cout<<"ingrese nombre del asiento"<<endl;
+     cin.ignore();
+     getline(cin,nombre);
+     cout<<"ingrese el costo"<<endl;
+     int caso=0;
+     cin>>costo;
+     int tam=costo.length();
+     while(caso!=1){
+     for(int i=0 ; i<tam;i++){
+         char j=costo[i];
+         if(j!='0'&& j!='1'&& j!='2'&& j!='3'&& j!='4'&& j!='5'&& j!='6'&& j!='7'&& j!='8'&& j!='9'){
+             caso=0;
+             break;
+         }
+         else{
+             caso=1;
+         }
+     }
+     if(caso==0){
+         cout<<"Ingrese saldo del cliente (Recuerde que deben ser solo números): "<<endl;
+         cin>>costo;
+          tam=costo.length();
+     }
+     }
 
-void madepel(string info){
+     asientos=asientos+ids+" | "+nombre+" | $"+costo;
+     escribir(asientos,"asientos.txt");
+}
+void madepel(string info){        // crea el cine y agregos las peliculas (en resumen paso lo del archivo a los contenedores y logica del programa)
 
     int tam=info.length();
     string pelicula;
-    for(int i=0;i<tam;i++){
+    for(int i=0;i<tam;i++){         // separo cada lines (pelicula) para ir agregandola
         if(info[i]!='\n'){
         pelicula+=info[i];
         }
         if(info[i]=='\n'){
-         b.agregar(pelicula);
+         b.agregar(pelicula);      // uso la funcion del cine para agregarla al objeto
          pelicula="";
        }
 
     }
 }
-
 void makesill(int i,int sillas){      // crear archivo de sillas  reservadas en una NUEVA pelicula
     std::string s = std::to_string(i);  // consigo su ID
     s +=".txt";
@@ -228,27 +272,129 @@ void makesill(int i,int sillas){      // crear archivo de sillas  reservadas en 
             info += u;
             info += " ";
         }
-        info += "\n";
+        if(k!=filas-1){
+        info+='\n';
+        }
+
+    }
+    escribir(info,s);
+
+}
+template<class T>
+void vueltos(T a,T b){
+    T num=b-a;
+    int cnt;
+    if(num==0){
+        cout<<endl<<"Completo"<<endl;
+    }
+    else{
+    cnt=num/50000;                      // hago las divisiones enteras para saber cuanto de cad billetes y monedas toca devolver
+    cout<<"BILLETES"<<endl;
+     cout<<"50000: "<<cnt<<endl;
+     num=num-50000*cnt;
+     cnt=num/20000;
+     cout<<"20000: "<<cnt<<endl;
+     num=num-20000*cnt;
+     cnt=num/10000;
+     cout<<"10000: "<<cnt<<endl;
+     num=num-10000*cnt;
+     cnt=num/5000;
+     cout<<"5000: "<<cnt<<endl;
+     num=num-5000*cnt;
+     cnt=num/2000;
+     cout<<"2000: "<<cnt<<endl;
+     num=num-2000*cnt;
+     cnt=num/1000;
+     cout<<"MONEDAS"<<endl;
+     cout<<"1000: "<<cnt<<endl;
+     num=num-1000*cnt;
+     cnt=num/500;
+      cout<<"500: "<<cnt<<endl;
+     num=num-500*cnt;
+     cnt=num/200;
+     cout<<"200: "<<cnt<<endl;
+     num=num-200*cnt;
+     cnt=num/100;
+     cout<<"100: "<<cnt<<endl;
+     num=num-100*cnt;
+     cnt=num/50;
+    cout<<"50: "<<cnt<<endl;
+     num=num-50*cnt;
+     cout<<"para las donaciones";
+      cout<<cnt<<endl;
+
     }
 
-    ofstream archivo2(s);
-
-    archivo2<<info;
-    archivo2.close();
+   // cout<<endl<<"sus vueltos son: "<<vueltos<<endl;
 
 }
 
-
-void seleasiento(int sele3)
+void seleasiento(int sele3,string *vents)
 {
-    b.seleasiento( sele3);
-    renewcartelera(sele3);
-
+    if(peliculafull( sele3)){
+        cout<<"pelicula esta full"<<endl;
+    }
+    else{
+    b.seleasiento( sele3,vents);   //seleciono el asiento dentro del objeto pelicula
+    renewcartelera(sele3);   // y renuevo la dsiponibilidad en la cartelera
+    }
 }
-void tipoasiento(){
-    cout<<"que tipo de asiento desea comprar:"<<endl;
-    string asiento = lectura("asientos.txt");        // cargo los tipos de asientos
-    cout<< asiento<<endl;                            // los muestro en pantalla
+int tipoasiento(int IDas,string *vents){     // elegir tipo de siento
+    string info=lectura("asientos.txt");
+    int tam=info.length();
+    int pres,dinerous=0;
+    string pelicula,num;
+    for(int i=0;i<tam;i++){
+        if(info[i]!='\n'){
+        pelicula+=info[i];
+        }
+        if(info[i]=='\n'){
+        int nume=IDre( pelicula);    //conseguir ID de la linea
+         if(IDas==nume){             // si coincide con la pelicula donde se compro haga..
+           pres=LocPRES(pelicula);
+         }
+         pelicula="";
+       }
+
+
+    }
+    string precio=to_string(pres);
+   *vents=*vents+"$"+precio+" | ";
+    cout<<"----------------------"<<endl<<"usted va pagar: "<<"$"<<precio<<endl<<"----------------------"<<endl;
+    cout<<"ingese cantidad con la cual va a pagar:   ";
+    cin>>dinerous;
+    while (dinerous<pres) {
+       cout<<"dinero insuficente"<<endl<<"ingres de nuevo cantidad: ";
+       cin>>dinerous;
+    }
+    vueltos(pres,dinerous);
+
+    return  IDas;
+}
+bool peliculafull(int sele3){
+    string info=lectura("peliculas.txt");
+    int tam=info.length();
+    int anc,disp;
+    string pelicula,num;
+    for(int i=0;i<tam;i++){
+        if(info[i]!='\n'){
+        pelicula+=info[i];
+        }
+        if(info[i]=='\n'){
+        int nume=IDre( pelicula);    //conseguir ID de la linea
+         if(sele3==nume){             // si coincide con la pelicula donde se compro haga..
+          int pos=LocSIL(pelicula,&anc,&disp);
+          if(disp!=0){
+             return false ;
+          }
+          else{
+              return  true;
+          }
+         }
+         pelicula="";
+       }
+
+    }
 }
 void renewcartelera(int sele3){    // cambiar sillas disponibles en la cartelera
     string info=lectura("peliculas.txt");
@@ -261,7 +407,7 @@ void renewcartelera(int sele3){    // cambiar sillas disponibles en la cartelera
         }
         if(info[i]=='\n'){
         int nume=IDre( pelicula);    //conseguir ID de la linea
-         if(sele3==nume){             // si coincide con la pelicula donde se comporhaga..
+         if(sele3==nume){             // si coincide con la pelicula donde se compro haga..
           int pos=LocSIL(pelicula,&anc,&disp);
           int anpeli=pelicula.length();
 
@@ -269,7 +415,7 @@ void renewcartelera(int sele3){    // cambiar sillas disponibles en la cartelera
           disp --;
           string dispo=to_string(disp);
           info.replace(pos,anc,dispo);
-          ofstream archivo2("peliculas.txt");
+          ofstream archivo2("../archivo/peliculas.txt");
           archivo2<<info;
           archivo2.close();
 
@@ -294,9 +440,33 @@ int IDre(string pelicula){    // sacar el ID de una pelicula
              return nume;
         }
     }
-
+    return 0;
 }
-int LocSIL(string pelicul,int *r,int *disp){
+
+int LocPRES(string pelicul){    // localisar silla
+    int tam=pelicul.length();
+     int cnt=0;
+     string dis;
+    for(int i=0;i<tam;i++){      // itero en el tamaño del  string
+        if(pelicul[i]=='|'){   // aumento contador a cambiar de lugar despues de |
+            cnt+=1;
+
+        }
+
+        if(cnt==2){
+
+            if(pelicul[i]!='|'&&pelicul[i]!=' '&&pelicul[i]!='$'){
+            dis+=pelicul[i];    // guardo asientos
+            }
+        }
+
+
+    }
+    int d= std::atoi(dis.c_str());
+    return d;                    // retorno la poscion por la funcion
+}
+
+int LocSIL(string pelicul,int *r,int *disp){    // localisar silla
     int tam=pelicul.length();
     int pos;
      int cnt=0,anc=0;
@@ -322,11 +492,11 @@ int LocSIL(string pelicul,int *r,int *disp){
     int star=0;
 
     string sd;
-    for(int i =1;i<q;i++){
+    for(int i =1;i<q;i++){  // itero para encontrar el ancho de la seccion de disponibles
 
         if(dis[i]=='/'){
             star=1;
-            *r=anc;
+            *r=anc;         // retorno el ancho por puntero
         }
         if(star==0){
             if(dis[i]!=' '){
@@ -335,6 +505,69 @@ int LocSIL(string pelicul,int *r,int *disp){
             }
         }
     }
-    *disp=std::atoi(sd.c_str());
-    return pos;
+    *disp=std::atoi(sd.c_str());   // retorno el numero de sillas disponibles por puntero
+    return pos;                    // retorno la poscion por la funcion
+}
+
+void agregarusuario()
+{
+    string usuario=lectura("sudo.txt");
+    string cedula,clave;
+    cout<<"Ingrese la cedula del usuario a registrar: "<<endl;
+    cin>>cedula;
+    cout<<"Ingrese nueva clave de 4 digitos para el usuario registrado : "<<endl;
+    cin>>clave;
+    while(clave.length()!=4){
+        cin>>clave;
+    }
+    usuario=usuario+cedula+","+clave;
+    escribir(usuario,"sudo.txt");
+
+}
+
+
+void newestreno()
+{
+    string peliculas=lectura("estrenos.txt");
+    int I=knowid(peliculas);          // uso la funcion creada para saber mi ultimo ID
+    int duracion,mes=0,dia=0;
+    char ID[1];
+    string nombre,genero,duracions,clasif,year;
+    string parte;
+    I+=1;
+    itoa(I,ID,10);
+    parte = parte + ID+" | ";
+    cout<<"ingrese el nombre de la pelicula:"<<endl;
+    cin.ignore();
+    getline(cin,nombre);                                                               // poder ingresar un nombre largo con espacios uso getline con ignore para borrar el buffer
+    parte = parte + nombre+" | ";
+    cout<<"ingrese el genero de la pelicula:"<<endl;
+    cin>>genero;
+    while ( getchar ( ) != '\n' ) ;
+    parte = parte + genero+" | ";
+    cout<<"ingrese la duracion(min) de la pelicula:"<<endl;
+    cin>>duracion;
+   duracions=to_string(duracion);
+    parte = parte + duracions+ " min"+" | ";
+    cout<<"  enter movie premiere year "<<endl;
+    cin>>year;
+    cout<<"ingrese  mes de estreno "<<endl;
+    while (mes<1||mes>12) {
+    cin>>mes;
+    }
+    string mess=to_string(mes);
+    cout<<"ingrese  dia de estreno "<<endl;
+    while (dia<1||dia>31) {
+    cin>>dia;
+    }
+     string diaa=to_string(dia);
+    parte=parte+diaa+"/"+ mess+"/"+year+" | ";
+    cout<<"ingrese clasificacion: "<<endl;
+    cin>>clasif;
+    parte=parte + clasif;
+    peliculas += parte;
+    madepel(peliculas);
+    escribir(peliculas,"estrenos.txt");
+
+
 }

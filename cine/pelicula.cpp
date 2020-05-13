@@ -88,6 +88,7 @@ void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicul
             hour+=salat[i];
             }
         }
+    }
         sala = std::atoi(sal.c_str());
         hora= std::atoi(hour.c_str());
         q=dis.length();
@@ -109,6 +110,7 @@ void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicul
                 s+=dis[i];
                 }
             }
+        }
          disponibles = std::atoi(sd.c_str());
          sillas= std::atoi(sd.c_str());
          clase=cl;
@@ -126,10 +128,36 @@ void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicul
 
 
          }
+         if(sillas==100){
+             char letra='A';
+             vector<int> sill;
+             for(int i=0;i < 10;i++){
+                 ss.insert(pair<char, vector<int>>(letra,sill));
+                 letra ++;
+               }
+             for(rs=ss.begin();rs!=ss.end();rs++){
+             for (int i=1; i<=10; i++)rs->second.push_back(i);
+             }
+
+
+         }
+         if(sillas==140){
+             char letra='A';
+             vector<int> sill;
+             for(int i=0;i < 15;i++){
+                 ss.insert(pair<char, vector<int>>(letra,sill));
+                 letra ++;
+               }
+             for(rs=ss.begin();rs!=ss.end();rs++){
+             for (int i=1; i<=10; i++)rs->second.push_back(i);
+             }
+
+
+         }
 
     }
-    }
-}
+
+
 
 bool pelicula::validh(int d, int s, int h)   // valido si la hora y sala estan disponibles para una pelicula
 {
@@ -200,7 +228,7 @@ void pelicula::visuasientos(){                 // muestro la sala
     }
     cout<<endl;
 }
-void pelicula::seleasiento()
+void pelicula::seleasiento(string *vents)
 {
 
         visuasientos();         // muestro asientos
@@ -212,7 +240,7 @@ void pelicula::seleasiento()
         fila=toupper(fila);
         cout<<"ingrese numero de la sillas:"<<endl;
         cin>>num;
-        if(valas(fila,num)){            // valido si estan disponibles
+        if(valas(fila,num)){            // miro si estan disponibles
           cout<<"asiento no disponible "<<endl;
 
         }
@@ -220,11 +248,15 @@ void pelicula::seleasiento()
             flg=1;
         }
        }
-
+        string nums=to_string(num);
+        string par=fila+nums+"\n";
+        *vents=*vents+par;
 
 
 }
 string pelicula::lectura(string ar){
+    string t="../archivo/";
+    ar=t+ar;
     string palabra;
     ifstream archivo(ar);
     while(!archivo.eof()){              //leer y guardarhasta encontrar caracter fin de texto
@@ -254,20 +286,22 @@ bool pelicula::valas(char a,int num){     // validar y reserva asiento en una pe
 
                 return false;
             }
+
+
         }
         }
         else{
             return true;
         }
-
+        return  true;
 }
 
 int pelicula::pos(char a,int num){     // saber la posicion del asiento deseado dentro del string
     int t;
 
     int j=a-'A';
-    j=j*20;
-        switch(num){
+    j=j*20;                      // para igual el iterador del srting con la fila deseada
+        switch(num){            // saber la candidad necesaria  que le debo sumar para encontra en el string el asiento deseadp
         case 0:
             t=j+0;
             break;
@@ -304,10 +338,44 @@ int pelicula::pos(char a,int num){     // saber la posicion del asiento deseado 
 
 }
 void pelicula::escribirR(string info,string ar){   // funcion de escrbir dentro de pelicula p
-
+    string t="../archivo/";
+    ar=t+ar;
     ofstream archivo2(ar);
     archivo2<<info;
     archivo2.close();
+}
+string codifica2(string palabra){   // metodo de codificado2 usado en practica anterior
+        int n=4;
+      int cnt1=1;
+      long tam=palabra.length();
+      string codif2;
+      char parte[n];
+      for(int i=0;i<tam;i++){
+        if(cnt1==n){
+            cnt1=0;
+            parte[cnt1]=palabra[i];
+            for(int j=0;j<n;j++){
+            codif2=codif2+parte[j];
+            }
+            cnt1++;
+        }
+        else{
+            parte[cnt1]=palabra[i];
+            cnt1++;
+        }
+      }
+      return codif2;
+
+}
+
+string decodifica2(string palabra){   //metodo de decodificado2 usado en practica anterior
+       int n=4;
+      string codif2=palabra;
+      for(int k=0;k<(n-1);k++){
+       codif2=codifica2(codif2);
+      }
+      return codif2;
+
 }
 
 
