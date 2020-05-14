@@ -152,7 +152,7 @@ bool pelicula::validh(int d, int s, int h)   // valido si la hora y sala estan d
 {
     if(sala==s){ // comparo sala
         int u=duracion/60+1;
-        if((h+d)>=(hora)&&(h+d)<=(hora+u)){// si la sala es igual debo mirar si hora y duracion se solapan con un margen de una hora mas para arreglar la sala
+        if((h+d)>=(hora)&&(h)<=(hora+u)){// si la sala es igual debo mirar si hora y duracion se solapan con un margen de una hora mas para arreglar la sala
             return true;
         }
         else{
