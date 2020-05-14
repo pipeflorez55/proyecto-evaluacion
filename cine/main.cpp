@@ -14,8 +14,23 @@ int main()
     if(venta=='s'){
         string ventas="";
         escribir(ventas,"ventas.bin");
+        string info=lectura("peliculasRN.bin");
+        escribir(info,"peliculas.bin");
+        info=lectura("1R.bin");
+        escribir(info,"1.bin");
+        info=lectura("2R.bin");
+        escribir(info,"2.bin");
+        info=lectura("3R.bin");
+        escribir(info,"3.bin");
+        info=lectura("4R.bin");
+        escribir(info,"4.bin");
+        info=lectura("5R.bin");
+        escribir(info,"5.bin");
     }
 
+   else{
+        vents=lectura("ventas.bin");
+    }
     while (true) {
 
   cout<<endl<<"-----------------------------------------"<<endl<<endl;

@@ -122,9 +122,8 @@ void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicul
                  ss.insert(pair<char, vector<int>>(letra,sill));
                  letra ++;
                }
-             for(rs=ss.begin();rs!=ss.end();rs++){
-             for (int i=1; i<=10; i++)rs->second.push_back(i);
-             }
+
+
 
 
          }
@@ -135,11 +134,6 @@ void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicul
                  ss.insert(pair<char, vector<int>>(letra,sill));
                  letra ++;
                }
-             for(rs=ss.begin();rs!=ss.end();rs++){
-             for (int i=1; i<=10; i++)rs->second.push_back(i);
-             }
-
-
          }
          if(sillas==140){
              char letra='A';
@@ -148,11 +142,6 @@ void pelicula::agregarp(string pelicul)     // llenar ls variables de la pelicul
                  ss.insert(pair<char, vector<int>>(letra,sill));
                  letra ++;
                }
-             for(rs=ss.begin();rs!=ss.end();rs++){
-             for (int i=1; i<=10; i++)rs->second.push_back(i);
-             }
-
-
          }
 
     }
@@ -276,7 +265,7 @@ bool pelicula::valas(char a,int num){     // validar y reserva asiento en una pe
         int tam= rs->second.size();      // el tamaño del vector
         for(int i=0;i<tam;i++){         // itero dentro del vector
             if(num==rs->second[i]){     // verifico si tengo el numero de asiento disponible
-                rs->second.erase(rs->second.begin()+(i-1));   //si esta lo borro del vector
+                rs->second.erase(rs->second.begin()+(i));   //si esta lo borro del vector
                 std::string s = std::to_string(ID);            // consigo el ID de la pelicula
                 s +=".bin";
                 string info=lectura(s);                         // leo el archivo de asientos de esa pelicula
